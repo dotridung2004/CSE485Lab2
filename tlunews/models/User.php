@@ -1,15 +1,12 @@
-<?php 
+<?php
+    require_once __DIR__ .'/../config/Database.php';
     class User{
         private $id;
         private $username;
         private $password;
         private $role;
-        public function __construct($id, $username, $password, $role){
-            $this->id = $id;
-            $this->username = $username;
-            $this->password = $password;
-            $this->role = $role;
-        }
+
+        public function __construct(){}
         public function getId(){
             return $this->id;
         }
@@ -34,6 +31,20 @@
         public function setRole($role){
             $this->role = $role;
         }
-    }
 
+        public function checkUser($username,$password){
+            $db = new Database();
+            $conn = $db->getConnect();
+            $stmt = $conn->prepare('SELECT * FROM users WHERE username = :username AND password = :password');
+            $stmt->bindParam(':username', $username);
+            $stmt->bindParam(':password', $password);
+            $stmt->execute();
+            if($stmt->rowCount() > 0){
+                return $stmt ->fetch(PDO::FETCH_ASSOC);
+            }
+            else{
+                return false;
+            }
+        }
+    }
 ?>

@@ -1,4 +1,5 @@
-<?php 
+<?php
+    require_once __DIR__ .'/../config/Database.php';
     class News{
         private $id;
         private $title;
@@ -7,14 +8,7 @@
         private $created_at;
         private $category_id;
 
-        public function __construct($id, $title, $content, $image, $created_at, $category_id){
-            $this->id = $id;
-            $this->title = $title;
-            $this->content = $content;
-            $this->image = $image;
-            $this->created_at = $created_at;
-            $this->category_id = $category_id;
-        }
+        public function __construct(){}
 
         public function getId(){
             return $this->id;
@@ -52,6 +46,24 @@
         }
         public function setCategoryId($category_id){
             $this->category_id = $category_id;
+        }
+
+        public function SelectAllNews(){
+            $db = new Database();
+            $conn = $db->getConnect();
+            $stmt = $conn->prepare('SELECT * FROM news');
+            $stmt -> execute();
+            $result = $stmt -> setFetchMode(PDO::FETCH_ASSOC);
+            $kq = $stmt -> fetchAll();
+            return $kq;
+        }
+
+        public function AddNews($title,$content,$image){
+            $db = new Database();
+            $conn = $db->getConnect();
+            $stmt = $conn->prepare('INSERT INTO news(title,content,image) VALUES (?,?,?)');
+            $stmt -> execute([$title,$content,$image]);
+            return $stmt ->fetchAll(PDO::FETCH_ASSOC);
         }
     }
 ?>
