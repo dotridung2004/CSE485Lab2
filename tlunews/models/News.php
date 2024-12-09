@@ -48,22 +48,63 @@
             $this->category_id = $category_id;
         }
 
-        public function SelectAllNews(){
+        public function SelectAllNews() {
             $db = new Database();
             $conn = $db->getConnect();
-            $stmt = $conn->prepare('SELECT * FROM news');
-            $stmt -> execute();
-            $result = $stmt -> setFetchMode(PDO::FETCH_ASSOC);
-            $kq = $stmt -> fetchAll();
-            return $kq;
+            $stmt = $conn->prepare("SELECT * FROM news");
+            $stmt->execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            return $result;
         }
 
-        public function AddNews($title,$content,$image){
-            $db = new Database();
-            $conn = $db->getConnect();
-            $stmt = $conn->prepare('INSERT INTO news(title,content,image) VALUES (?,?,?)');
-            $stmt -> execute([$title,$content,$image]);
-            return $stmt ->fetchAll(PDO::FETCH_ASSOC);
+        public function AddNews($title, $content, $image, $category_id) {
+            try {
+                $db = new Database();
+                $conn = $db->getConnect();
+                $stmt = $conn->prepare("INSERT INTO news (title, content, image, category_id) VALUES (:title, :content, :image, :category_id)");
+                $stmt->bindParam(':title', $title);
+                $stmt->bindParam(':content', $content);
+                $stmt->bindParam(':image', $image);
+                $stmt->bindParam(':category_id', $category_id);
+                $stmt->execute();
+                return true;
+            } catch (PDOException $e) {
+                echo "Lỗi: " . $e->getMessage();
+                return false;
+            }
+        }
+        
+        public function UpdateNews($id,$title, $content, $image, $category_id){
+            try {
+                $db = new Database();
+                $conn = $db -> getConnect();
+                $stmt = $conn -> prepare("UPDATE news SET title = :title,content = :content,image = :image,category_id = :category_id WHERE id = :id");
+                $stmt -> bindParam(':title',$title);
+                $stmt -> bindParam(':content',$content);
+                $stmt -> bindParam(':image',$image);
+                $stmt -> bindParam(':category_id',$category_id);
+                $stmt -> bindParam(':id',$id);
+                $stmt -> execute();
+                return true;
+            } catch (PDOException $e) {
+                echo "Lỗi: " . $e->getMessage();
+                return false;
+            }
+        }
+
+        public function DeleteNews($id){
+            try{
+                $db = new Database();
+                $conn = $db -> getConnect();
+                $stmt = $conn -> prepare("DELETE FROM news where id = :id ");
+                $stmt -> bindParam(':id',$id);
+                $stmt -> execute();
+                return true;
+            }catch(PDOException $e){
+                echo "Lỗi: " . $e->getMessage();
+                return false;
+            }
+            
         }
     }
 ?>

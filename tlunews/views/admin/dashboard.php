@@ -1,78 +1,217 @@
+<?php 
+    include '../../controllers/NewsController.php';
+    include '../../controllers/LoginController.php';
+    $select = new NewsController();
+    $newsList = $select -> SelectNews();
+    $category = $select -> GetCategories();
+    if(isset($_POST['btn-add'])){
+        $AddNews = $select -> CreateNews();
+    }
+    if(isset($_POST['btn-update'])){
+        $UpdateNews = $select -> UpdateNews();
+    }
+    if(isset($_POST['btn-delete'])){
+        $DeleteNews = $select -> DeleteNews();
+    }
+    $controller = new LoginController();
+    if (isset($_POST['logout'])) {
+        $controller->logout();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Tin Tức</title>
-    <link rel="stylesheet" href="../../css/Admin.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body>
     <div class="container">
-        <h1>QUẢN LÝ TIN TỨC</h1>
-        <form action="login.php" method="post">
-            <input type="submit" value="Đăng xuất" name="logout">
-        </form>
-        <table>
-            <thead>
-                <tr>
-                    <th>HÌNH ẢNH</th>
-                    <th>TIÊU ĐỀ</th>
-                    <th>THỂ LOẠI</th>
-                    <th>NỘI DUNG</th>
-                    <th>THUỘC TÍNH</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><img src="/images/khach1.png" alt="Tin tức 1"></td>
-                    <td>Nam chính 'Tuổi trẻ giá bao nhiêu' hút mọi ánh nhìn ở hậu trường</td>
-                    <td>TRUYỀN HÌNH</td>
-                    <td>VTV.vn - Đoàn Thế Vinh đã có những chia sẻ thú vị về hậu trường phim...</td>
-                    <td>
-                        <a href="news/add.php">
-                            <input type="submit" value="Thêm tin tức">
-                        </a>
-                        <a href="news/edit.php">
-                            <input type="submit" value="Sửa tin tức">
-                        </a>
-                        <a href="news/delete.php">
-                            <input type="submit" value="Xóa tin tức">
-                        </a>
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="/images/khach2.png" alt="Tin tức 2"></td>
-                    <td>Sức sống mãnh liệt của những bài ca về người lính</td>
-                    <td>VĂN HÓA-GIẢI TRÍ</td>
-                    <td>VTV.vn - Cho đến hôm nay, hình tượng người lính bộ đội Cụ Hồ vẫn...</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><img src="/images/khach3.png" alt="Tin tức 3"></td>
-                    <td>Nữ sĩ Quỳnh Dao tạm biệt cuộc đời ở tuổi 86</td>
-                    <td>VĂN HÓA-GIẢI TRÍ</td>
-                    <td>VTV.vn - Nhà văn, nhà biên kịch, nhà sản xuất phim nổi tiếng của Đài Loan...</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><img src="/images/khach4.png" alt="Tin tức 4"></td>
-                    <td>Tuổi trẻ giá bao nhiêu - Tập 33: Kiều gian dối để lấy lòng bà Thu</td>
-                    <td>TRUYỀN HÌNH</td>
-                    <td>VTV.vn - Vốn là người gian dối, mưu mô, Kiều dễ dàng bày trò lấy lòng bà Thu...</td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center m-3">QUẢN LÝ TIN TỨC</h1>
+            </div>
+            <div class="col-10">
+            <input type="submit" class="btn btn-outline-primary m-2" name="btn-add" value="Create News" data-bs-toggle="modal" data-bs-target="#btn-add-Modal">
+            </div>
+            <div class="col-2">
+                <form action="" method="post">
+                    <input type="submit" class="btn btn-outline-secondary m-2" value="Out Login" name="logout">
+                </form>
+            </div>
+            <div class="col-12">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Content</th>
+                            <th>Image</th>
+                            <th>Created_at</th>
+                            <th>Category_id</th>
+                            <th>Function</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($newsList as $news): ?>
+                        <tr>
+                            <td><?php echo $news['id']?></td>
+                            <td><?php echo $news['title']?></td>
+                            <td><?php echo $news['content']?></td>
+                            <td>
+                                <img src=" <?php echo $news['image']?> " alt="Ảnh sản phẩm" width="100">
+                            </td>
+                            <td><?php echo $news['created_at']?></td>
+                            <td><?php echo $news['category_id']?></td>
+                            <td>
+                                <div class="d-flex">
+                                    <input type="submit" value="Edit news" class="btn btn-outline-warning m-2"  data-bs-toggle="modal" data-bs-target="#btn-edit-Modal">
+                                    <input type="submit" value="Delete news" class="btn btn-outline-danger m-2"  data-bs-toggle="modal" data-bs-target="#btn-delete-Modal">
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="pagination">
-            <a href="#">&laquo;</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <span>...</span>
-            <a href="#">9</a>
-            <a href="#">&raquo;</a>
+
+            <!-- Model-AddNews -->
+            <div class="modal fade" id="btn-add-Modal" tabindex="-1" aria-labelledby="btn-add-ModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="btn-add-ModalLabel">Create News</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <input type="text" name = "title" class="form-control" placeholder="Title" id="addtitle" required><br>
+                                    <label for="addtitle">Title</label>
+                                </div>
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <textarea class="form-control" placeholder="Content" id="floatingTextarea2" style="height: 100px" name="content"></textarea><br>
+                                    <label for="floatingTextarea2">Content</label>
+                                </div>
+                                <div class="input-group mx-auto" style="width: 400px;">
+                                    <input type="text" class="form-control" id="inputGroupFile02" name="image" required>
+                                    <label class="input-group-text" for="inputGroupFile02">Image</label>
+                                </div>
+                                <br>
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <select name="category_id" id="category_id" class="form-select" placeholder="Category" required>
+                                        <label for="category_id">Category_id</label>
+                                        <?php foreach ($category as $categories): ?>
+                                            <option value="<?php echo $categories['id']; ?>"><?php echo $categories['id'];?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <br>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Save Changes" name="btn-add">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal-UpdateNews -->
+            <div class="modal fade" id="btn-edit-Modal" tabindex="-1" aria-labelledby="btn-edit-ModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form action="" method="post">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="btn-edit-ModalLabel">Update News</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <select name="id" id="IDNews" class="form-select" placeholder="ID News" required>
+                                        <label for="IDNews">ID</label>
+                                        <?php foreach ($newsList as $newList): ?>
+                                            <option value="<?php echo $newList['id'];?>"><?php echo $newList['id'];?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <br>
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <input type="text" name = "title" class="form-control" placeholder="Title" id="edittitle" required><br>
+                                    <label for="edittitle">Title</label>
+                                </div>
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <input type="text" name = "content" class="form-control" placeholder="Content" id="editcontent" required><br>
+                                    <label for="editcontent">Content</label>
+                                </div>
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <input type="text" name = "image" class="form-control" placeholder="Image" id="editimage" required>
+                                    <label for="editimage">Image</label>
+                                </div>
+                                <br>
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <select name="category_id" id="category_id" class="form-select" placeholder="Category" required>
+                                        <label for="category_id">Category_id</label>
+                                        <?php foreach ($category as $categories): ?>
+                                            <option value="<?php echo $categories['id']; ?>"><?php echo $categories['id'];?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Save Changes" name="btn-update">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Modal-DeleteNews -->
+            <div class="modal fade" id="btn-delete-Modal" tabindex="-1" aria-labelledby="btn-delete-ModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <form action="" method="post">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="btn-delete-ModalLabel">Delete News</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <select name="id" id="IDNews" class="form-select" placeholder="ID News" required>
+                                        <label for="IDNews">ID</label>
+                                        <?php foreach ($newsList as $newList): ?>
+                                            <option value="<?php echo $newList['id'];?>"><?php echo $newList['id'];?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" class="btn btn-primary" value="Save Changes" name="btn-delete">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- <div class="pagination">
+                <a href="">&laquo;</a>
+                <a href="" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <span>...</span>
+                <a href="#">9</a>
+                <a href="#">&raquo;</a>
+            </div> -->
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

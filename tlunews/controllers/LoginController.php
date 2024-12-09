@@ -14,13 +14,13 @@
                     if($userData['role']==1){
                         {
                             // $message =  "Đăng nhập thành công tài khoản Admin";
-                            header('location:tlunews\views\admin\dashboard.php');
+                            header('location:tlunews/views/admin/dashboard.php');
                             exit;
                         }
                     }
                     else if($userData['role']==0){
                         // $message =  "Đăng nhập thành công tài khoản Admin";
-                        header('location:tlunews\views\home\index.php');
+                        header('location:tlunews/views/home/index.php');
                         exit;
                     }
                 else{
@@ -45,7 +45,7 @@
             if (isset($_COOKIE['PHPSESSID'])) {
                 setcookie('PHPSESSID', '', time() - 3600, '/');
             }
-            header('location:tlunews\views\admin\login.php');
+            header('location:../../../index.php');
             exit;
         }
     }

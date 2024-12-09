@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Trang đăng nhập</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/login.css">
 </head>
-<body class="d-flex align-items-center justify-content-center vh-100" style="background: linear-gradient(to bottom, #87ceeb, #ffb6c1);">
+<body class="d-flex align-items-center justify-content-center vh-100">
     <div class="container d-flex shadow rounded overflow-hidden" style="width: 70%; height: 70%;">
-        <div class="col-md-6 d-none d-md-block" id="bg-login" style="background: url('../../image/background.jpg') no-repeat center center / cover;"></div>
+        <div class="col-md-6 d-none d-md-block" id="bg-login"></div>
             <div class="col-md-6 bg-white d-flex flex-column justify-content-center align-items-center p-5">
                 <div class="w-100" style="max-width: 300px;">
                     <h2 class="mb-4 text-center">Đăng Nhập</h2>
