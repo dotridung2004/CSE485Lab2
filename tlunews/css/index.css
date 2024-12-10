@@ -1,0 +1,23 @@
+.body {
+  background: url("../image/background.jpg");
+}
+.card {
+  height: 100%; /* Chiều cao đầy đủ trong container */
+}
+
+/* Ảnh trong thẻ card: đảm bảo kích thước phù hợp */
+.card-img-top {
+  height: 200px;
+  object-fit: cover; /*Cắt hình cho vừa khung */
+}
+
+/* Đặt chiều cao tối thiểu để thẻ card bằng nhau */
+.card-body {
+  flex-grow: 1; /* Nội dung giãn ra đều nhau */
+}
+
+/* Đồng bộ chiều cao các cột */
+.col-md-4 {
+  display: flex;
+  flex-direction: column;
+}

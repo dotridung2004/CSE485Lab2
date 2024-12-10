@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . "/../models/News.php";
-require_once __DIR__ . "/../models/Category.php";
+include_once (__DIR__ . "/../models/News.php");
+include_once (__DIR__ . "/../models/Category.php");
 
 class NewsController {
 
@@ -20,8 +20,8 @@ class NewsController {
         $image = $_POST["image"];
         $category_id = $_POST["category_id"];
         $newsModel = new News();
-        $Addnews = $newsModel->AddNews($title, $content,$image,$category_id);
-        return $Addnews;
+        $AddNews = $newsModel->AddNews($title, $content,$image,$category_id);
+        return $AddNews;
     }
 
     public function UpdateNews(){
@@ -40,6 +40,13 @@ class NewsController {
         $NewsModel = new News();
         $DeleteNews = $NewsModel -> DeleteNews($id);
         return $DeleteNews;
+    }
+
+    public function FindNews(){
+        $title = $_POST['title'];
+        $NewsModel = new News();
+        $FindNews = $NewsModel -> FindNews($title);
+        return $FindNews;
     }
 }
 ?>

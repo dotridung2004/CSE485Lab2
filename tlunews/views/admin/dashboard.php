@@ -2,8 +2,13 @@
     include '../../controllers/NewsController.php';
     include '../../controllers/LoginController.php';
     $select = new NewsController();
-    $newsList = $select -> SelectNews();
     $category = $select -> GetCategories();
+    if(isset($_POST['btn-find'])){
+        $newsList = $select -> FindNews();
+    }
+    else{
+        $newsList = $select -> SelectNews();
+    }
     if(isset($_POST['btn-add'])){
         $AddNews = $select -> CreateNews();
     }
@@ -34,7 +39,7 @@
                 <h1 class="text-center m-3">QUẢN LÝ TIN TỨC</h1>
             </div>
             <div class="col-10">
-            <input type="submit" class="btn btn-outline-primary m-2" name="btn-add" value="Create News" data-bs-toggle="modal" data-bs-target="#btn-add-Modal">
+                <input type="submit" class="btn btn-outline-primary m-2" name="btn-add" value="Create" data-bs-toggle="modal" data-bs-target="#btn-add-Modal">
             </div>
             <div class="col-2">
                 <form action="" method="post">
@@ -61,14 +66,14 @@
                             <td><?php echo $news['title']?></td>
                             <td><?php echo $news['content']?></td>
                             <td>
-                                <img src=" <?php echo $news['image']?> " alt="Ảnh sản phẩm" width="100">
+                                <img src="<?php echo $news['image']?> " alt="Ảnh sản phẩm" width="100">
                             </td>
                             <td><?php echo $news['created_at']?></td>
                             <td><?php echo $news['category_id']?></td>
                             <td>
                                 <div class="d-flex">
-                                    <input type="submit" value="Edit news" class="btn btn-outline-warning m-2"  data-bs-toggle="modal" data-bs-target="#btn-edit-Modal">
-                                    <input type="submit" value="Delete news" class="btn btn-outline-danger m-2"  data-bs-toggle="modal" data-bs-target="#btn-delete-Modal">
+                                    <input type="submit" value="Update" class="btn btn-outline-warning m-2"  data-bs-toggle="modal" data-bs-target="#btn-edit-Modal">
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger m-2"  data-bs-toggle="modal" data-bs-target="#btn-delete-Modal">
                                 </div>
                             </td>
                         </tr>
@@ -96,9 +101,9 @@
                                     <textarea class="form-control" placeholder="Content" id="floatingTextarea2" style="height: 100px" name="content"></textarea><br>
                                     <label for="floatingTextarea2">Content</label>
                                 </div>
-                                <div class="input-group mx-auto" style="width: 400px;">
-                                    <input type="text" class="form-control" id="inputGroupFile02" name="image" required>
-                                    <label class="input-group-text" for="inputGroupFile02">Image</label>
+                                <div class="form-floating mx-auto" style="width: 400px;">
+                                    <input type="text" class="form-control" placeholder="image" id="addimage" name="image" required>
+                                    <label for="addimage">Image</label>
                                 </div>
                                 <br>
                                 <div class="form-floating mx-auto" style="width: 400px;">
@@ -199,19 +204,8 @@
                     </form>
                 </div>
             </div>
-
-            <!-- <div class="pagination">
-                <a href="">&laquo;</a>
-                <a href="" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <span>...</span>
-                <a href="#">9</a>
-                <a href="#">&raquo;</a>
-            </div> -->
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

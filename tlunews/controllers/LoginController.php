@@ -1,5 +1,5 @@
 <?php
-    require_once __DIR__ ."/../models/User.php";
+    include_once (__DIR__ ."/../models/User.php");
     session_start();
     ob_start();
     class LoginController{
@@ -14,20 +14,20 @@
                     if($userData['role']==1){
                         {
                             // $message =  "Đăng nhập thành công tài khoản Admin";
-                            header('location:tlunews/views/admin/dashboard.php');
+                            header('location:dashboard.php');
                             exit;
                         }
                     }
                     else if($userData['role']==0){
                         // $message =  "Đăng nhập thành công tài khoản Admin";
-                        header('location:tlunews/views/home/index.php');
+                        header('location:index.php');
                         exit;
                     }
                 else{
                     $message = "Tên đăng nhập hoặc mật khẩu không đúng";
                 }
                 }
-                require_once __DIR__ .'/../views/admin/login.php';
+                include_once __DIR__ .('/../views/admin/login.php');
             }
         }
 
@@ -45,7 +45,7 @@
             if (isset($_COOKIE['PHPSESSID'])) {
                 setcookie('PHPSESSID', '', time() - 3600, '/');
             }
-            header('location:../../../index.php');
+            header('location:login.php');
             exit;
         }
     }

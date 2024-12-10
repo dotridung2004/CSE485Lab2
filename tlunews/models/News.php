@@ -1,5 +1,5 @@
 <?php
-    require_once __DIR__ .'/../config/Database.php';
+    include_once (__DIR__ .'/../config/Database.php');
     class News{
         private $id;
         private $title;
@@ -104,7 +104,19 @@
                 echo "Lỗi: " . $e->getMessage();
                 return false;
             }
-            
+        }
+
+        public function FindNews($title){
+            $db = new Database();
+            $conn = $db -> getConnect();
+            $stmt = $conn -> prepare("SELECT * FROM news WHERE title = :title");
+            $stmt -> bindParam(':title',$title);
+            $stmt -> execute();
+            $result = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+            // echo "<pre>";
+            // print_r($result);
+            // echo "</pre>";
+            return $result;
         }
     }
 ?>
